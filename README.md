@@ -6,3 +6,13 @@ Command for running the tests:
 
     - If browser is null then the default browser is chrome browser.
     - Browser name can be chrome, firefox.
+
+If your tests requires browser then include @driver in your feature file. It will open the browser. For api tests it is not necessary, so we don't need to include it.
+
+For api tests, include @api.
+
+3 threads are running parallel. You can change the count from pom.xml file > threadCount.
+
+Currently, I am still working on adding dynamic env.
+
+Lets us know if you have any query or suggestion.
