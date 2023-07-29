@@ -5,7 +5,7 @@ public class Constant {
     public static String testingEnv = System.getProperty("server") != null ? System.getProperty("server") : "demo";
     public static final String DEMO_ADMIN_URL = "https://www.your-demo-admin-url.com/";
     public static final String PRE_PROD_ADMIN_URL = "https://www.your-prod-admin-url.com/";
-    public static final String LIVE_ADMIN_URL = "https://mpower.pidilite.com/";
+    public static final String LIVE_ADMIN_URL = "https://www.your-live-admin-url.com/";
     public static final String API_BASE_URL = "https://reqres.in/api";
     public static final String ipInfoUrl = "https://ipinfo.io/";
     // Add your ipinfo.io website token Ex. Bearer tokenAbcd
