@@ -11,7 +11,7 @@ public class IpInfoApi extends AbstractSteps {
     private final ApiUtility apiUtility = new ApiUtility();
     @When("User sends IpInfo Api")
     public void userSendsIpInfoApi() {
-        apiUtility.callPostApiWithAuthToken(Constant.ipInfoUrl, Constant.ipInfoToken);
+        apiUtility.callPostApiWithAuthToken(Constant.ipInfoApiUrl, Constant.ipInfoToken);
     }
 
     @Then("User should get Ip info of the user's Ip")

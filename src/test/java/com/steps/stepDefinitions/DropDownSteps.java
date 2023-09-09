@@ -14,6 +14,7 @@ import pages.DropDownPage;
 
 public class DropDownSteps extends AbstractSteps {
     private final WebDriver driver = testContext().getDriver();
+    private final By dropDownPageLocator = By.linkText("Dropdown");
     private final By dropdown = By.id("dropdown");
 
     DropDownPage dropDownPage = new DropDownPage();
@@ -40,5 +41,10 @@ public class DropDownSteps extends AbstractSteps {
     @Then("Dropdown: Selected option should be {string}")
     public void dropdownSelectedOptionShouldBe(String option) {
         Assert.assertEquals(option, dropDownPage.getSelectedOption());
+    }
+
+    @When("User goes to dropdown page")
+    public void userGoesToDropdownPage() {
+        driver.findElement(dropDownPageLocator).click();
     }
 }

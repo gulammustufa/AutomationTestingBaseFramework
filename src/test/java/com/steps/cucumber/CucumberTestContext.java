@@ -48,6 +48,7 @@ public enum CucumberTestContext {
         driver.manage().window().maximize();
         set("DRIVER", driver);
         getScenarioLogger().log(Constant.browserName + " browser is opened.");
+        driver.get(Constant.frontBaseUrl); // Go to front end base url
     }
 
     public void setScenarioLogger(Scenario scenario) {

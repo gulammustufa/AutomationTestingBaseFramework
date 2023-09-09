@@ -1,23 +1,50 @@
 package utility;
 
-public class Constant {
-    public static String browserName = System.getProperty("browser") != null ? System.getProperty("browser") : "chrome";
-    public static String testingEnv = System.getProperty("server") != null ? System.getProperty("server") : "demo";
-    public static final String DEMO_ADMIN_URL = "https://www.your-demo-admin-url.com/";
-    public static final String PRE_PROD_ADMIN_URL = "https://www.your-prod-admin-url.com/";
-    public static final String LIVE_ADMIN_URL = "https://mpower.pidilite.com/";
-    public static final String API_BASE_URL = "https://reqres.in/api";
-    public static final String ipInfoUrl = "https://ipinfo.io/";
-    // Add your ipinfo.io website token Ex. Bearer tokenAbcd
-    public static final String ipInfoToken = "Bearer yourToken";
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
-    public static String getAdminPanelUrl() {
-        String adminUrl = switch (testingEnv) {
-            case "demo" -> DEMO_ADMIN_URL;
-            case "ppe" -> PRE_PROD_ADMIN_URL;
-            case "live" -> LIVE_ADMIN_URL;
-            default -> null;
-        };
-        return adminUrl;
+public class Constant {
+    public static final String DEFAULT_TEST_ENV = "qa";
+    public static final String DEFAULT_BROWSER = "chrome";
+    public static String browserName = System.getProperty("browser") != null ? System.getProperty("browser") : DEFAULT_BROWSER;
+    public static String testEnv;
+    public static String frontBaseUrl;
+    public static String apiBaseUrl;
+    public static String ipInfoApiUrl;
+    public static String ipInfoToken;
+    public static Properties TestDataProperties;
+
+    private static String getTestEnv() {
+        String testPropertyValue = System.getProperty("testEnv");
+        String testEnvValue = System.getenv("testEnv");
+
+        // First priority will be from the command line then environment value
+        if (testPropertyValue == null && testEnvValue == null) {
+            return DEFAULT_TEST_ENV;
+        } else if (testPropertyValue != null) {
+            return testPropertyValue;
+        } else if (testEnvValue != null) {
+            return testEnvValue;
+        } else {
+            return DEFAULT_TEST_ENV;
+        }
     }
+
+    public static void setUpTestEnvData() throws IOException {
+        testEnv = getTestEnv();
+        String filePath = "src/test/resources/config/";
+        TestDataProperties = new Properties();
+        File envFile = new File(filePath + testEnv + ".properties");
+        FileInputStream fileInputStream = new FileInputStream(envFile);
+        TestDataProperties.load(fileInputStream);
+        fileInputStream.close();
+
+        ipInfoApiUrl = TestDataProperties.getProperty("ip_info_api_url");
+        ipInfoToken = TestDataProperties.getProperty("ip_info_token");
+        apiBaseUrl = TestDataProperties.getProperty("reqres_api_url");
+        frontBaseUrl = TestDataProperties.getProperty("front_base_url");
+    }
+
 }

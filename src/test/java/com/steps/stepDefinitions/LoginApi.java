@@ -14,7 +14,7 @@ public class LoginApi extends AbstractSteps {
 
     @When("User call get all user api")
     public void userCallGetAllUserApi() {
-        apiUtility.callGetApi(Constant.API_BASE_URL + "/users?page=1");
+        apiUtility.callGetApi(Constant.apiBaseUrl + "/users?page=1");
     }
 
     @Then("User should receive list of all the users")
@@ -27,7 +27,7 @@ public class LoginApi extends AbstractSteps {
     @When("User call create user api with {string} and {string}")
     public void userCallCreateUserApi(String email, String password) {
         String queryBody = ApiBody.getCreateUserBody(email, password);
-        apiUtility.callPostApiWithoutAuthToken(Constant.API_BASE_URL + "/api/register", queryBody);
+        apiUtility.callPostApiWithoutAuthToken(Constant.apiBaseUrl + "/api/register", queryBody);
     }
 
     @Then("User should be receive created user id and {string}")
@@ -41,7 +41,7 @@ public class LoginApi extends AbstractSteps {
 
     @When("User call get user api with user id {string}")
     public void userCallGetUserApiWithUserId(String userId) {
-        apiUtility.callGetApi(Constant.API_BASE_URL + "/users/" + userId);
+        apiUtility.callGetApi(Constant.apiBaseUrl + "/users/" + userId);
     }
 
     @Then("User should receive info of user id {string}")

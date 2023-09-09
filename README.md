@@ -1,13 +1,13 @@
 This project contains basic setup for cucumber with java and JUnit.
 We can run tests in parallel using cucumber test context.
 
-Command for running the tests: 
-    mvn clean verify -DargLine="-Dbrowser=chrome"
+Command for running the tests:
+mvn clean verify -DargLine="-DtestEnv=ppe -Dbrowser=firefox" -D"cucumber.filter.tags=@ip-info"
 
     - If browser is null then the default browser is chrome browser.
     - Browser name can be chrome, firefox.
 
-If your tests requires browser then include @driver in your feature file. It will open the browser. For api tests it is not necessary, so we don't need to include it.
+If your tests require browser then include @driver in your feature file. It will open the browser. For api tests it is not necessary, so we don't need to include it.
 
 For api tests, include @api.
 
