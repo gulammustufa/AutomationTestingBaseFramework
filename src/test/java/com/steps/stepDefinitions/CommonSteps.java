@@ -18,6 +18,6 @@ public class CommonSteps extends AbstractSteps {
     @Then("Verify webpage title is {string}")
     public void verifyWebpageTitleIs(String expectedTitle) {
         String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedTitle);
+        Assert.assertEquals(expectedTitle, actualTitle);
     }
 }
