@@ -13,7 +13,7 @@ public class Hooks extends AbstractSteps {
     @Before(order = 0)
     public void setUp(Scenario scenario) throws IOException {
         testContext().setScenarioLogger(scenario);
-        testContext().getScenarioLogger().log("SETUP SCENARIO " + scenario.getName());
+        testContext().getScenarioLogger().log("SETUP SCENARIO: " + scenario.getName());
         Constant.setUpTestEnvData();
         testContext().getScenarioLogger().log("testEnv = " + Constant.testEnv);
     }
@@ -25,7 +25,7 @@ public class Hooks extends AbstractSteps {
 
     @After()
     public void tearDown(Scenario scenario) {
-        testContext().getScenarioLogger().log("GENERIC TEARDOWN " + scenario.getName());
+        testContext().getScenarioLogger().log("SCENARIO TEARDOWN: " + scenario.getName());
 
         // We are not opening browser for API testing. So putted this condition to check null driver
         if (testContext().getDriver() != null) {
