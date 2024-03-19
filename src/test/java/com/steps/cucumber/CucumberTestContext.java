@@ -19,6 +19,7 @@ public enum CucumberTestContext {
     CONTEXT;
     private static final String RESPONSE = "RESPONSE";
     private static final String SCENARIO = "SCENARIO";
+    private static final String GRAPHQL_RESPONSE = "GRAPHQL_RESPONSE";
     private final ThreadLocal<Map<String, Object>> threadLocal = withInitial(HashMap::new);
     private Map<String, Object> testContextMap() {
         return threadLocal.get();
@@ -83,5 +84,13 @@ public enum CucumberTestContext {
 
     public Response getResponse() {
         return get(RESPONSE, Response.class);
+    }
+
+    public void setGraphQlResponse(Response response) {
+        set(GRAPHQL_RESPONSE, response);
+    }
+
+    public Response getGraphQlResponse() {
+        return get(GRAPHQL_RESPONSE, Response.class);
     }
 }

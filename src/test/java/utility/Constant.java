@@ -14,6 +14,7 @@ public class Constant {
     public static String apiBaseUrl;
     public static String ipInfoApiUrl;
     public static String ipInfoToken;
+    public static String graphQlApiUrl;
     public static Properties TestDataProperties;
 
     private static String getTestEnv() {
@@ -45,6 +46,7 @@ public class Constant {
         ipInfoToken = TestDataProperties.getProperty("ip_info_token");
         apiBaseUrl = TestDataProperties.getProperty("reqres_api_url");
         frontBaseUrl = TestDataProperties.getProperty("front_base_url");
+        graphQlApiUrl = TestDataProperties.getProperty("graphQL_api_url");
     }
 
 }
