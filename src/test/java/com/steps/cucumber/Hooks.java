@@ -5,6 +5,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import utility.Constant;
 
 import java.io.IOException;
@@ -29,12 +30,13 @@ public class Hooks extends AbstractSteps {
 
         // We are not opening browser for API testing. So putted this condition to check null driver
         if (testContext().getDriver() != null) {
+            WebDriver driver = testContext().getDriver();
             if (scenario.isFailed()) {
-                byte[] screenshot = ((TakesScreenshot) testContext().getDriver()).getScreenshotAs(OutputType.BYTES);
+                byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
                 scenario.attach(screenshot, "image/png", "Screenshot");
             }
-            testContext().getDriver().close();
+            testContext().reset();
+            driver.close();
         }
-        testContext().reset();
     }
 }

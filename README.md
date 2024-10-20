@@ -1,8 +1,8 @@
-This project contains basic setup for cucumber with java and JUnit.
+This project contains basic setup for cucumber with java and JUnit 5+.
 We can run tests in parallel using cucumber test context.
 
 Command for running the tests:
-mvn clean verify -DargLine="-DtestEnv=qa -Dbrowser=firefox" -D"cucumber.filter.tags=@ip-info"
+mvn clean verify -DargLine="-DtestEnv=qa -Dbrowser=chrome" -D"cucumber.filter.tags= not @graphQL"
 
     - If browser is null then the default browser is chrome browser.
     - Browser name can be chrome, firefox.
@@ -11,8 +11,8 @@ If your tests require browser then include @driver in your feature file. It will
 
 For api tests, include @api.
 
-3 threads are running parallel. You can change the count from pom.xml file > threadCount.
+5 threads are running parallel. You can change the count from junit-platform.properties file.
 
-Currently, I am still working on adding dynamic env.
+I have updated the Junit version. Now all scenarios are working parallel.
 
 Lets us know if you have any query or suggestion.

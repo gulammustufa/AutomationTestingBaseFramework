@@ -22,9 +22,7 @@ public class Constant {
         String testEnvValue = System.getenv("testEnv");
 
         // First priority will be from the command line then environment value
-        if (testPropertyValue == null && testEnvValue == null) {
-            return DEFAULT_TEST_ENV;
-        } else if (testPropertyValue != null) {
+        if (testPropertyValue != null) {
             return testPropertyValue;
         } else if (testEnvValue != null) {
             return testEnvValue;

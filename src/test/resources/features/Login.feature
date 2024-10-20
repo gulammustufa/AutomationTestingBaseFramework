@@ -2,14 +2,15 @@
 Feature: Login Test Cases
   I want to test Login functionality
 
-  Scenario: Login with valid credentials Latest
+#  This will fail
+  Scenario: Login with valid credentials
     When User goes to login page
-    And User enters email address as "tomsmith" and password as "SuperSecretPassword!"
+    And User enters email address as "tomsmithh" and password as "SuperSecretPassword!"
     And Click on login button
     Then Message should be "You logged into a secure area!"
 
 
-  Scenario Outline: Login with invalid credentials Latest
+  Scenario Outline: Login with invalid credentials
     When User goes to login page
     And User enters email address as "<email>" and password as "<password>"
     And Click on login button
