@@ -5,7 +5,7 @@ Feature: Page title test cases
     When User go to url "<url>"
     Then Verify webpage title is "<expectedTitle>"
     Examples:
-      | url                     | expectedTitle                                                            |
-      | https://www.google.com  | Google                                                                   |
-      | https://www.yahoo.com   | Yahoo \| Mail, Weather, Search, Politics, News, Finance, Sports & Videos |
-      | https://www.youtube.com | YouTube                                                                  |
+      | url                      | expectedTitle                |
+      | https://www.google.com   | Google                       |
+      | https://www.facebook.com | Facebook – log in or sign up |
+      | https://www.youtube.com  | YouTube                      |
