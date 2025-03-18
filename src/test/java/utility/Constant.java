@@ -17,7 +17,7 @@ public class Constant {
     public static String graphQlApiUrl;
     public static Properties TestDataProperties;
 
-    private static String getTestEnv() {
+    public static String getTestEnv() {
         String testPropertyValue = System.getProperty("testEnv");
         String testEnvValue = System.getenv("testEnv");
 

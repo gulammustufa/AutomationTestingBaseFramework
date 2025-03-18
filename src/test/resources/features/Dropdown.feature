@@ -7,7 +7,6 @@ Feature: Dropdown feature
     And User selects option as "Option 1" from dropdown
     Then Selected option should be "Option 1"
 
-
   Scenario: Test select dropdown feature with object
     When User goes to dropdown page
     And Dropdown: User selects option as "Option 1" from dropdown
