@@ -141,10 +141,36 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.1</version>
             </plugin>
+            <!--
+                We are adding report.properties file content to the reports. For this we need to copy
+                the file in target/classes folder. Script copy the file before starting of the script.
+                We are adding the start, end time and duration at last. So in target folder latest files
+                are not there. So we need to use below plugin for copy the latest file.
+            -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-updated-report-properties</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- Copy the latest report.properties to target/classes -->
+                                <copy file="src/test/resources/report.properties"
+                                      todir="${project.build.directory}/classes"
+                                      overwrite="true"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.8.2</version>
+                <version>5.7.5</version>
                 <executions>
                     <execution>
                         <id>execution</id>
@@ -166,11 +192,10 @@
                                 <param>**/*.json</param>
                             </jsonFiles>
                             <!-- optional, defaults to outputDirectory if not specified -->
-                            <classificationDirectory>${project.build.directory}</classificationDirectory>
+                            <classificationDirectory>${project.build.directory}/classes</classificationDirectory>
                             <classificationFiles>
                                 <!-- supports wildcard or name pattern -->
-                                <param>sample.properties</param>
-                                <param>other.properties</param>
+                                <param>report.properties</param>
                             </classificationFiles>
                             <!-- optional, set true to fail build on test failures -->
                             <checkBuildResult>false</checkBuildResult>
