@@ -16,3 +16,14 @@ For api tests, include @api.
 I have updated the Junit version. Now all scenarios are working parallel.
 
 Lets us know if you have any query or suggestion.
+
+**Steps for running only failed test cases:**
+1. First of all copy the previous report to different location. For that copy target > cucumber-html-reports to another location.
+
+   There are two ways to run it.
+    1. Add tag manually
+    - Add @failed tag in the failed scenarios.
+    2. Run src/test/java/utility/AddFailedTagInFeatureFiles.java file.
+    - It will add tag automatically.
+    - Ex. `java src/test/java/utility/AddFailedTagInFeatureFiles.java`
+   
