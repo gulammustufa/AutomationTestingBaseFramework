@@ -3,9 +3,9 @@ package com.steps.stepDefinitions;
 import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import utility.ApiUtility;
 import utility.Constant;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IpInfoApi extends AbstractSteps {
     private final ApiUtility apiUtility = new ApiUtility();
@@ -17,6 +17,6 @@ public class IpInfoApi extends AbstractSteps {
     @Then("User should get Ip info of the user's Ip")
     public void userShouldGetIpInfoOfTheUserSIp() {
         String userIp = testContext().getResponse().jsonPath().getString("ip");
-        Assert.assertFalse(userIp.isEmpty());
+        assertThat(userIp).isNotEmpty();
     }
 }

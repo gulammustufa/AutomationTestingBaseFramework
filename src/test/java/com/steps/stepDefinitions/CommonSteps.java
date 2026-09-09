@@ -3,7 +3,7 @@ package com.steps.stepDefinitions;
 import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 
 public class CommonSteps extends AbstractSteps {
@@ -18,6 +18,6 @@ public class CommonSteps extends AbstractSteps {
     @Then("Verify webpage title is {string}")
     public void verifyWebpageTitleIs(String expectedTitle) {
         String actualTitle = driver.getTitle();
-        Assert.assertEquals(expectedTitle, actualTitle);
+        Assertions.assertEquals(expectedTitle, actualTitle);
     }
 }

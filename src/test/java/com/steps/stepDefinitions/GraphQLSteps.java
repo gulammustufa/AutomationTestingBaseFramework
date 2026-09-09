@@ -4,7 +4,6 @@ import com.jayway.jsonpath.JsonPath;
 import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import utility.graphQL.GraphQLCommonSteps;
 import utility.graphQL.GraphQLEndpoints;
 import utility.graphQL.QueryVariables;
@@ -23,7 +22,7 @@ public class GraphQLSteps extends AbstractSteps {
     @Then("Verify that response returns only passed country code {string} data")
     public void verifyThatResponseReturnsOnlyPassedCountryCodeData(String countryCode) {
         var actualCountry = JsonPath.<List<String>>read(testContext().getGraphQlResponse().asString(), "$.data.countries[*].code");
-        Assert.assertEquals(countryCode, actualCountry.get(0));
+        assertThat(actualCountry.get(0)).isEqualTo(countryCode);
     }
 
     @When("User calls graphQL country api with country code {string} and currency {string}")
@@ -34,7 +33,6 @@ public class GraphQLSteps extends AbstractSteps {
     @Then("Verify that response returns data with passed country code {string} and currency {string}")
     public void verifyThatResponseReturnsDataWithPassedCountryCodeAndCurrency(String countryCode, String currency) {
         var actualCountry = JsonPath.<List<String>>read(testContext().getGraphQlResponse().asString(), "$.data.countries[*].code");
-        Assert.assertEquals(countryCode, actualCountry.get(0));
         assertThat(actualCountry).contains(countryCode);
 
         var actualCurrency = testContext().getGraphQlResponse().jsonPath().getString("data.countries[0].currency");

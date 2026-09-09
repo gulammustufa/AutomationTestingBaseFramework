@@ -4,7 +4,7 @@ import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,7 +30,7 @@ public class DropDownSteps extends AbstractSteps {
         Select select = new Select(driver.findElement(dropdown));
         WebElement option = select.getFirstSelectedOption();
         String selectedOption = option.getText();
-        Assert.assertEquals(expectedOption, selectedOption);
+        Assertions.assertEquals(expectedOption, selectedOption);
     }
 
     @And("Dropdown: User selects option as {string} from dropdown")
@@ -40,7 +40,7 @@ public class DropDownSteps extends AbstractSteps {
 
     @Then("Dropdown: Selected option should be {string}")
     public void dropdownSelectedOptionShouldBe(String option) {
-        Assert.assertEquals(option, dropDownPage.getSelectedOption());
+        Assertions.assertEquals(option, dropDownPage.getSelectedOption());
     }
 
     @When("User goes to dropdown page")

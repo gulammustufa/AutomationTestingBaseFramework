@@ -4,9 +4,10 @@ import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginSteps extends AbstractSteps {
     private final WebDriver driver = testContext().getDriver();
@@ -36,12 +37,12 @@ public class LoginSteps extends AbstractSteps {
     @Then("Message should be {string}")
     public void messageShouldBe(String message) {
         String actualMessage = driver.findElement(successMessageLocator).getText().strip().replace("\n×","");
-        Assert.assertEquals(message, actualMessage);
+        assertThat(actualMessage).isEqualTo(message);
     }
 
     @Then("Validation message should be {string}")
     public void validationMessageShouldBe(String message) {
         String actualMessage = driver.findElement(errorMessageLocator).getText().strip().replace("\n×","");
-        Assert.assertEquals(message, actualMessage);
+        assertThat(actualMessage).isEqualTo(message);
     }
 }
