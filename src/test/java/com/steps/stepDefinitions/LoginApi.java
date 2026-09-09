@@ -4,10 +4,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.steps.cucumber.AbstractSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import utility.ApiBody;
 import utility.ApiUtility;
 import utility.Constant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginApi extends AbstractSteps {
     private final ApiUtility apiUtility = new ApiUtility();
@@ -21,7 +22,7 @@ public class LoginApi extends AbstractSteps {
     public void userShouldReceiveListOfAllTheUsers() {
         String perPageData = testContext().getResponse().jsonPath().getString("per_page");
         int dataArraySize = JsonPath.<Integer>read(testContext().getResponse().asString(), "$.data.length()");
-        Assert.assertEquals(perPageData, String.valueOf(dataArraySize));
+        assertThat(String.valueOf(dataArraySize)).isEqualTo(perPageData);
     }
 
     @When("User call create user api with {string} and {string}")
@@ -33,10 +34,10 @@ public class LoginApi extends AbstractSteps {
     @Then("User should be receive created user id and {string}")
     public void userShouldBeReceiveCreatedUserIdAndToken(String expectedEmail) {
         String createdUserEmail = testContext().getResponse().jsonPath().getString("email");
-        Assert.assertEquals("Email not matched", expectedEmail, createdUserEmail);
+        assertThat(createdUserEmail).as("Email not matched").isEqualTo(expectedEmail);
 
         String createdUserId = testContext().getResponse().jsonPath().getString("id");
-        Assert.assertFalse("User id is null", createdUserId.isEmpty());
+        assertThat(createdUserId).as("User id is null").isNotEmpty();
     }
 
     @When("User call get user api with user id {string}")
@@ -47,6 +48,6 @@ public class LoginApi extends AbstractSteps {
     @Then("User should receive info of user id {string}")
     public void userShouldReceiveInfoOfSingleUser(String expectedUserId) {
         int actualUserId = JsonPath.<Integer>read(testContext().getResponse().asString(), "$.data.id");
-        Assert.assertEquals("User id not matched", expectedUserId, String.valueOf(actualUserId));
+        assertThat(String.valueOf(actualUserId)).isEqualTo(expectedUserId);
     }
 }
