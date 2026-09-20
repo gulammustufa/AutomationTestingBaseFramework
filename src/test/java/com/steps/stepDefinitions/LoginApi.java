@@ -1,7 +1,7 @@
 package com.steps.stepDefinitions;
 
 import com.jayway.jsonpath.JsonPath;
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utility.ApiBody;
@@ -10,7 +10,7 @@ import utility.Constant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoginApi extends AbstractSteps {
+public class LoginApi extends BaseSteps {
     private final ApiUtility apiUtility = new ApiUtility();
 
     @When("User call get all user api")

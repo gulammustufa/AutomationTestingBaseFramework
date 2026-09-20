@@ -1,21 +1,24 @@
 package com.steps.cucumber;
 
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.Geolocation;
+import org.assertj.core.api.SoftAssertions;
 import utility.Constant;
 import io.cucumber.java.Scenario;
 import io.restassured.response.Response;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.time.Duration;
+import java.awt.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import static java.lang.ThreadLocal.withInitial;
 
 public enum CucumberTestContext {
     CONTEXT;
+    final String currUser = System.getProperty("user.name");
     private static final String RESPONSE = "RESPONSE";
     private static final String SCENARIO = "SCENARIO";
     private static final String GRAPHQL_RESPONSE = "GRAPHQL_RESPONSE";
@@ -32,21 +35,43 @@ public enum CucumberTestContext {
     }
 
     public void openBrowser() {
-        WebDriver driver;
-        if (Constant.browserName.equals("chrome")) {
-            driver = new ChromeDriver(getChromeOptions());
-        } else if (Constant.browserName.equals("firefox")) {
-            driver = new FirefoxDriver();
+        Browser browser;
+        Playwright playwright = Playwright.create();
+        browser = switch (Constant.browserName) {
+            case "msedge" -> playwright.chromium().launch(getLaunchOptions(Constant.browserName));
+            case "chrome" ->playwright.chromium().launch(getLaunchOptions("chromium"));
+            case "firefox" -> playwright.firefox().launch(getLaunchOptions(Constant.browserName));
+            default -> playwright.chromium().launch(getLaunchOptions("chrome"));
+        };
+
+        BrowserContext context;
+        boolean headlessBrowser = getIsHeadLessBrowser();
+        Path recordVideoDir = Paths.get("target/raw_videos/");
+        if (!headlessBrowser) {
+            // Create a new incognito browser context
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int width = (int) screenSize.getWidth();
+            int height = (int) screenSize.getHeight();
+            context = browser.newContext(new Browser.NewContextOptions().setViewportSize(width, height).setRecordVideoDir(recordVideoDir)
+                    .setRecordVideoSize(1280, 720));
         } else {
-            driver = new ChromeDriver(getChromeOptions());
+            context = browser.newContext(new Browser.NewContextOptions().setRecordVideoDir(recordVideoDir)
+                    .setRecordVideoSize(1280, 720));
         }
 
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-        set("DRIVER", driver);
+        // Create a new page inside context.
+        Geolocation geolocation = new Geolocation(23.0244537, 72.5587647);
+        context.setGeolocation(geolocation);
+        context.grantPermissions(List.of("geolocation"));
+        Page page = context.newPage();
+        page.setDefaultNavigationTimeout(120000);
+
+        page.navigate(Constant.frontBaseUrl);
+
+        set("BROWSER", browser);
+        set("PLAYWRIGHT", playwright);
+        set("PAGE", page);
         getScenarioLogger().log(Constant.browserName + " browser is opened.");
-        driver.get(Constant.frontBaseUrl); // Go to front end base url
     }
 
     public void setScenarioLogger(Scenario scenario) {
@@ -57,22 +82,37 @@ public enum CucumberTestContext {
         return get(SCENARIO, Scenario.class);
     }
 
-    public WebDriver getDriver() {
-        return (WebDriver) testContextMap().get("DRIVER");
+    public Playwright getPlaywright() {
+        return (Playwright) testContextMap().get("PLAYWRIGHT");
+    }
+
+    public Browser getBrowser() {
+        return (Browser) testContextMap().get("BROWSER");
+    }
+
+    public Page getBrowserPage() {
+        return (Page) testContextMap().get("PAGE");
     }
 
     public void reset() {
         testContextMap().clear();
     }
 
-    public ChromeOptions getChromeOptions() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--no-sandbox",
-                "--disable-logging",
-                "--log-level=3",
-                "--remote-allow-origins=*");
-        return options;
+    public BrowserType.LaunchOptions getLaunchOptions(String browserName) {
+        String currUser = System.getProperty("user.name");
+        if (browserName.equals("chromium") && currUser.contains("jenkins")){
+            browserName = "chrome";
+        }
+        boolean headlessBrowser = getIsHeadLessBrowser();
+        return new BrowserType.LaunchOptions()
+                .setChannel(browserName)
+                .setHeadless(headlessBrowser)
+                .setSlowMo(500);
+    }
+
+    public boolean getIsHeadLessBrowser() {
+        String headLessBrowserFromCommandLine = System.getProperty("headLessBrowser");
+        return currUser.contains("jenkins") || (headLessBrowserFromCommandLine != null && headLessBrowserFromCommandLine.equals("true"));
     }
 
     public void setResponse(Response response) {
@@ -89,5 +129,13 @@ public enum CucumberTestContext {
 
     public Response getGraphQlResponse() {
         return get(GRAPHQL_RESPONSE, Response.class);
+    }
+
+    public void setSoftAssertions(SoftAssertions softAssertions) {
+        set("SOFT_ASSERTION", softAssertions);
+    }
+
+    public SoftAssertions getSoftAssertion() {
+        return (SoftAssertions) testContextMap().get("SOFT_ASSERTION");
     }
 }

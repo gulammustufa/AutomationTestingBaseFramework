@@ -1,7 +1,7 @@
 package com.steps.stepDefinitions;
 
 import com.jayway.jsonpath.JsonPath;
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utility.graphQL.GraphQLCommonSteps;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GraphQLSteps extends AbstractSteps {
+public class GraphQLSteps extends BaseSteps {
     GraphQLCommonSteps graphQLCommonSteps = new GraphQLCommonSteps();
     @When("User calls graphQL country api with country code {string}")
     public void userCallsGraphQLCountryApiWithCountryCode(String countryCode) {

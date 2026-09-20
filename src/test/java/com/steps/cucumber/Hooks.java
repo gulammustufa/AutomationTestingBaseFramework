@@ -1,20 +1,25 @@
 package com.steps.cucumber;
 
+import com.microsoft.playwright.Page;
 import io.cucumber.java.*;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.assertj.core.api.SoftAssertions;
 import utility.Constant;
 import utility.DateTimeUtility;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class Hooks extends AbstractSteps {
+public class Hooks extends BaseSteps {
     private static String starTimeString;
     private static final String ddMmmYyyyDateFormat = "dd MMM yyyy, hh:mm:ss a";
     private static final String FILE_PATH = "src/test/resources/report.properties";
@@ -41,18 +46,62 @@ public class Hooks extends AbstractSteps {
     }
 
     @After()
-    public void tearDown(Scenario scenario) {
-        testContext().getScenarioLogger().log("SCENARIO TEARDOWN: " + scenario.getName());
+    public void tearDown(Scenario scenario) throws IOException {
+        testContext().getScenarioLogger().log("GENERIC TEARDOWN: " + scenario.getName());
+        Page page = testContext().getBrowserPage();
+        boolean failed = scenario.isFailed();
 
-        // We are not opening browser for API testing. So putted this condition to check null driver
-        if (testContext().getDriver() != null) {
-            WebDriver driver = testContext().getDriver();
-            if (scenario.isFailed()) {
-                byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-                scenario.attach(screenshot, "image/png", "Screenshot");
+        if (page != null && (failed || scenario.getStatus().name().equalsIgnoreCase("SKIPPED"))) {
+            byte[] screenshot = page.screenshot(new Page.ScreenshotOptions()
+                    .setPath(Paths.get("target/tmp", "screenshot.png")).setFullPage(true));
+            scenario.attach(screenshot, "image/png", "Screenshot");
+        }
+
+        SoftAssertions softAssertions = testContext().getSoftAssertion();
+        if (softAssertions != null) {
+            softAssertions.assertAll();
+            StringBuilder assertionErrors = new StringBuilder();
+            softAssertions.errorsCollected().forEach(error -> assertionErrors.append(error.toString()).append("\n"));
+
+            // Log or report assertion errors
+            if (!assertionErrors.isEmpty()) {
+                testContext().getScenarioLogger().log("Soft assertion errors:\n" + assertionErrors);
+                // You can also log assertion errors to a logger or any other reporting mechanism
             }
+        }
+
+        if (page != null) {
+            String scenarioName = scenario.getName()
+                    .replaceAll("[^a-zA-Z0-9.-]", "_");
+            String fileName = scenarioName
+                    + "_" + Thread.currentThread().getId()
+                    + "_" + System.currentTimeMillis()
+                    + ".webm";
+            Path videoPath = Objects.requireNonNull(page.video()).path();
+            page.close();
+            testContext().getBrowser().close();
+            testContext().getPlaywright().close();
             testContext().reset();
-            driver.close();
+
+            if (failed) {
+                Path newVideoPath = Paths.get("target/videos/" + fileName);
+                Files.createDirectories(newVideoPath.getParent());
+                Files.move(
+                        videoPath,
+                        newVideoPath,
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+
+                // Attach video location
+                scenario.attach(
+                        newVideoPath.toAbsolutePath().toString().getBytes(StandardCharsets.UTF_8),
+                        "text/plain",
+                        "Video Location"
+                );
+            } else {
+                // Test passed → remove the video
+                Files.deleteIfExists(videoPath);
+            }
         }
     }
 

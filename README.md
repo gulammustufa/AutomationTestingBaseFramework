@@ -27,3 +27,6 @@ Lets us know if you have any query or suggestion.
     - It will add tag automatically.
     - Ex. `java src/test/java/utility/AddFailedTagInFeatureFiles.java`
    
+
+In pom.xml file, added org.codehaus.mojo this plugin for updating the video recording link in the report. Ex. Open Video
+Files in reports folder are for that.
