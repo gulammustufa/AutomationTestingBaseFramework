@@ -1,23 +1,17 @@
 package pages;
 
-import com.steps.cucumber.AbstractSteps;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
+import com.microsoft.playwright.Page;
+import com.steps.cucumber.BaseSteps;
 
-public class DropDownPage extends AbstractSteps {
-    private final WebDriver driver = testContext().getDriver();
-    private final By dropdown = By.id("dropdown");
+public class DropDownPage extends BaseSteps {
+    Page page = testContext().getBrowserPage();
+    String dropdownLocator = "#dropdown";
 
     public void selectFromDropDown(String option) {
-        Select dropdownButton = new Select(driver.findElement(dropdown));
-        dropdownButton.selectByVisibleText(option);
+        page.locator(dropdownLocator).selectOption(option);
     }
 
     public String getSelectedOption() {
-        Select select = new Select(driver.findElement(dropdown));
-        WebElement option = select.getFirstSelectedOption();
-        return option.getText();
+        return page.locator(dropdownLocator).locator("option:checked").textContent();
     }
 }

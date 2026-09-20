@@ -1,12 +1,12 @@
 package utility;
 
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class ApiUtility extends AbstractSteps {
+public class ApiUtility extends BaseSteps {
     public void callGetApi(String getApiUrl) {
         testContext().getScenarioLogger().log("\nGet Api Url:\n" + getApiUrl);
         Response response = given().get(getApiUrl);

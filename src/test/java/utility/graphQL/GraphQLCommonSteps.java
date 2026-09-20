@@ -1,13 +1,13 @@
 package utility.graphQL;
 
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import utility.Constant;
 
 import static io.restassured.RestAssured.given;
 
-public class GraphQLCommonSteps extends AbstractSteps {
+public class GraphQLCommonSteps extends BaseSteps {
     public void sendGraphQLQuery(GraphQLEndpoints graphQLEndpoints, QueryVariables variables) {
         GraphQLQueryBuilder graphQLQueryBuilder = new GraphQLQueryBuilder();
         graphQLQueryBuilder.setQuery(setQueryTemplate(graphQLEndpoints));

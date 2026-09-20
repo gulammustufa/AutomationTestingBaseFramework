@@ -1,23 +1,22 @@
 package com.steps.stepDefinitions;
 
-import com.steps.cucumber.AbstractSteps;
+import com.microsoft.playwright.Page;
+import com.steps.cucumber.BaseSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.WebDriver;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CommonSteps extends AbstractSteps {
-    private final WebDriver driver = testContext().getDriver();
+public class CommonSteps extends BaseSteps {
+    Page page = testContext().getBrowserPage();
 
     @When("User go to url {string}")
     public void user_go_to_url(String url) {
-        driver.get(url);
+        page.navigate(url);
     }
-
 
     @Then("Verify webpage title is {string}")
     public void verifyWebpageTitleIs(String expectedTitle) {
-        String actualTitle = driver.getTitle();
-        Assertions.assertEquals(expectedTitle, actualTitle);
+        String actualTitle = page.title();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 }

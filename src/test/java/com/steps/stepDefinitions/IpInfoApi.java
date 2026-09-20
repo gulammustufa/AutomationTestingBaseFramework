@@ -1,13 +1,13 @@
 package com.steps.stepDefinitions;
 
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utility.ApiUtility;
 import utility.Constant;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IpInfoApi extends AbstractSteps {
+public class IpInfoApi extends BaseSteps {
     private final ApiUtility apiUtility = new ApiUtility();
     @When("User sends IpInfo Api")
     public void userSendsIpInfoApi() {
