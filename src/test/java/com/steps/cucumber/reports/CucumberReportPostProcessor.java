@@ -1,4 +1,4 @@
-package utility.reports;
+package com.steps.cucumber.reports;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
