@@ -5,4 +5,10 @@ public class BaseSteps {
     protected CucumberTestContext testContext() {
         return CONTEXT;
     }
+
+    protected void log(String message) {
+        if (testContext().getScenarioLogger() != null) {
+            testContext().getScenarioLogger().log(message);
+        }
+    }
 }

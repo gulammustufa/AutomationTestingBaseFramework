@@ -16,6 +16,9 @@ public class Constant {
     public static String ipInfoToken;
     public static String graphQlApiUrl;
     public static Properties TestDataProperties;
+    public static final String MAILINATOR_API_TOKEN = "a09498c3aa42a404dbc844fea10cafadfa";
+    public static final String MAILINATOR_DOMAIN = "yourdomain.testinator.email";
+    public static final String MAILINATOR_API_URL = "https://mailinator.com/api/v2/domains/";
 
     public static String getTestEnv() {
         String testPropertyValue = System.getProperty("testEnv");
